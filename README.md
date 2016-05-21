@@ -28,7 +28,8 @@ picker.getTile(); // Tile.W9
 Tile[picker.getTile()]; // 'W9'
 ```
 
-The `Tile` enum contains values `W1-W9, P1-P9, S1-S9, East, South, West, North, White, Green, Red`.
+The `Tile` enum contains values `W1-W9, T1-T9, S1-S9, East, South, West, North, White, Green, Red`.
+W for wanzi, T for tongzi, and S for suozi.
 ```javascript
 Tile.W1 // 0
 Tile[Tile.W1] // 'W1'

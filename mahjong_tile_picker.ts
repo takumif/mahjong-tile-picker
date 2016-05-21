@@ -158,7 +158,7 @@ class MahjongTilePickerHelper {
 
 enum Tile {
     W1, W2, W3, W4, W5, W6, W7, W8, W9,
-    P1, P2, P3, P4, P5, P6, P7, P8, P9,
+    T1, T2, T3, T4, T5, T6, T7, T8, T9,
     S1, S2, S3, S4, S5, S6, S7, S8, S9,
     East, South, West, North,
     White, Green, Red
