@@ -1,15 +1,16 @@
 class MahjongTilePicker {
     private tile: Tile;
     private parentElem: HTMLElement;
+    private containerElem: HTMLDivElement;
     private buttonElem: HTMLButtonElement;
     private previewElem: HTMLImageElement;
-    private tileElems: HTMLImageElement[];
-    private boxElem: HTMLDivElement;
     private buttonText: string;
+    private lightbox: MahjongTilePickerLightbox;
     
     constructor(elementId: string, buttonText="Pick a tile") {
         this.parentElem = document.getElementById(elementId);
         this.buttonText = buttonText;
+        this.lightbox = MahjongTilePickerLightbox.getInstance();
         this.init();
     }
     
@@ -37,22 +38,77 @@ class MahjongTilePicker {
     }
     
     private initDomElements(): void {
-        this.boxElem = document.createElement("div");
-        this.initTileElems();
-        this.parentElem.appendChild(this.boxElem);
-        this.initButtonElem();
+        this.containerElem = document.createElement("div");
+        this.containerElem.className = "mahjong-tile-picker";
+        
         this.initPreviewElem();
+        this.initButtonElem();
+        
+        this.parentElem.appendChild(this.containerElem);
     }
     
     private initButtonElem(): void {
         this.buttonElem = document.createElement("button");
-        this.parentElem.appendChild(this.buttonElem);
+        this.buttonElem.innerText = this.buttonText;
+        this.containerElem.appendChild(this.buttonElem);
     }
     
     private initPreviewElem(): void {
         this.previewElem = document.createElement("img");
-        this.previewElem.setAttribute("src", this.getImagePath(null));
-        this.parentElem.appendChild(this.previewElem);
+        this.previewElem.setAttribute("src", MahjongTilePickerHelper.getImagePath(null));
+        this.containerElem.appendChild(this.previewElem);
+    }
+    
+    private initBindings(): void {
+        this.buttonElem.onclick = () => {
+            this.lightbox.showForPicker(this);
+        }
+    }
+    
+    private updatePreview(): void {
+        var imagePath = MahjongTilePickerHelper.getImagePath(this.tile);
+        this.previewElem.setAttribute("src", imagePath);
+    }
+}
+
+/**
+ * A singleton class that hosts the lightbox part of the picker that is shared
+ * across all the pickers on the same page
+ */
+class MahjongTilePickerLightbox {
+    private static instance: MahjongTilePickerLightbox;
+    private tileElems: HTMLImageElement[];
+    private boxElem: HTMLDivElement;
+    private selectedPicker: MahjongTilePicker;
+    
+    /**
+     * Call this method instead of the constructor.
+     */
+    static getInstance(): MahjongTilePickerLightbox {
+        if (this.instance == undefined) {
+            this.instance = new MahjongTilePickerLightbox();
+        }
+        return this.instance;
+    }
+    
+    showForPicker(picker: MahjongTilePicker): void {
+        this.selectedPicker = picker;
+        fadeIn(this.boxElem);
+    }
+    
+    /**
+     * Do not call this. Use getInstance() instead.
+     */
+    constructor() {
+        this.initBoxElem();
+        this.initBindings();
+    }
+    
+    private initBoxElem(): void {
+        this.boxElem = document.createElement("div");
+        this.boxElem.className = "mahjong-tile-picker-lightbox";
+        this.initTileElems();
+        document.getElementsByTagName("body")[0].appendChild(this.boxElem);
     }
     
     private initTileElems(): void {
@@ -69,31 +125,28 @@ class MahjongTilePicker {
     
     private initTileElem(className: string, tileName: string): void {
         var tileElem = document.createElement("img");
-        tileElem.setAttribute("class", className);
+        tileElem.setAttribute("class", "mahjong-tile " + className);
         tileElem.setAttribute("id", tileName);
-        tileElem.setAttribute("src", this.getImagePath(Tile[tileName]));
+        tileElem.setAttribute("src", MahjongTilePickerHelper.getImagePath(Tile[tileName]));
         this.boxElem.appendChild(tileElem);
         this.tileElems.push(tileElem);
     }
     
     private initBindings(): void {
-        this.buttonElem.onclick = () => {
-            
-        }
         this.tileElems.forEach((tileElem, index, elems) => {
             tileElem.onclick = () => {
-                this.pickTile(Tile[tileElem.id]);
-                this.fadeOut(this.boxElem);
+                this.selectedPicker.pickTile(Tile[tileElem.id]);
+                fadeOut(this.boxElem);
             }
         });
     }
-    
-    private updatePreview(): void {
-        var imagePath = this.getImagePath(this.tile);
-        this.previewElem.setAttribute("src", imagePath);
-    }
-    
-    private getImagePath(tile: Tile): string {
+}
+
+/**
+ * A class with static helper methods
+ */
+class MahjongTilePickerHelper {
+    static getImagePath(tile: Tile): string {
         if (tile == null) {
             var name = "Back";
         } else {
@@ -109,4 +162,12 @@ enum Tile {
     S1, S2, S3, S4, S5, S6, S7, S8, S9,
     East, South, West, North,
     White, Green, Red
+}
+
+function fadeOut(elem: HTMLElement): void {
+    elem.style.display = "none";
+}
+
+function fadeIn(elem: HTMLElement): void {
+    elem.style.display = "block";
 }
