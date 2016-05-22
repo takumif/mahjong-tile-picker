@@ -6,10 +6,21 @@
         <link rel="stylesheet" type="text/css" href="mahjong_tile_picker.css">
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                picker1 = new MahjongTilePicker("parent");
-                picker2 = new MahjongTilePicker("parent");
+                for (var i = 0; i < 14; i++) {
+                    new MahjongTilePicker("parent");
+                }
             }, false);
         </script>
+        <style>
+            .mahjong-tile-picker {
+                float: left;
+            }
+            #parent {
+                padding-top: 200px;
+                width: 700px;
+                margin: 0 auto;
+            }
+        </style>
     </head>
     <body>
         <div id="parent"></div>

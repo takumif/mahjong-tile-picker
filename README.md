@@ -1,13 +1,21 @@
 # Mahjong Tile Picker
-A small JavaScript library for selecting mahjong tiles on a website.
+
+麻雀牌ピッカー
+
+A small JavaScript library for choosing mahjong tiles on a website.
 Take a look at the `typescript` branch for the code in TypeScript.
+
+![Screen recording](recording.gif)
+
+[DEMO](http://takumif.github.io/mahjong-tile-picker/)
 
 ## Usage
 HTML:
 ```html
-<script src="path/to/mahjong_tile_picker.js"></script>
-<link rel="stylesheet" type="text/css" href="path/to/mahjong_tile_picker.css">
-...
+<head>
+    <script src="path/to/mahjong_tile_picker.js"></script>
+    <link rel="stylesheet" type="text/css" href="path/to/mahjong_tile_picker.css">
+</head>
 <body>
     <div id="parentHtmlElementId"></div>
 </body>
@@ -15,8 +23,8 @@ HTML:
 
 JavaScript:
 ```javascript
-// Call this after the page has loaded
-var picker = new MahjongTilePicker("parentHtmlElementId");
+// Call this after the page has loaded. The second argument is optional.
+var picker = new MahjongTilePicker("parentHtmlElementId", "Text to put on buttons");
 
 console.log(picker.getTile()); // initially null
 
@@ -28,8 +36,8 @@ picker.getTile(); // Tile.W9
 Tile[picker.getTile()]; // 'W9'
 ```
 
-The `Tile` enum contains values `W1-W9, T1-T9, S1-S9, East, South, West, North, White, Green, Red`.
-W for wanzi, T for tongzi, and S for suozi.
+The `Tile` enum contains values `W1-W9, W5_red, T1-T9, T5_red, S1-S9, S5_red, East, South, West, North, White, Green, Red`.
+W for wanzi (characters), T for tongzi (circles), and S for suozi (bamboos). `W5_red`, etc. are doras.
 ```javascript
 Tile.W1 // 0
 Tile[Tile.W1] // 'W1'
@@ -45,16 +53,6 @@ picker.onTilePicked = function(tile) {
 picker.pickTile(Tile.East);
 // log: You just picked East!
 ```
-
-## To-Do
-* Hide tiles when not choosing
-* Group tiles by suit
-* Add CSS to make it prettier
-* Allow choosing dora tiles (the red ones)
-* Add a gif to the readme
-* Make a demo page oh gh-pages
-* Have the picking box div float in the middle of the page
-* Allow for multiple pickers on the same page (that share the box div)
 
 ## License
 * MIT
