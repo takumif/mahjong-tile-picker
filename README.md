@@ -2,7 +2,7 @@
 
 麻雀牌ピッカー
 
-A small JavaScript library for choosing mahjong tiles on a website.
+A small JavaScript library for choosing mahjong tiles on a web page.
 Take a look at the `typescript` branch for the code in TypeScript.
 
 ![Screen recording](recording.gif)
