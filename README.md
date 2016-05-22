@@ -1,5 +1,8 @@
 # Mahjong Tile Picker
-A small JavaScript library for selecting mahjong tiles on a website.
+
+麻雀牌ピッカー
+
+A small JavaScript library for choosing mahjong tiles on a website.
 Take a look at the `typescript` branch for the code in TypeScript.
 
 [DEMO](http://takumif.github.io/mahjong-tile-picker/)
@@ -7,9 +10,10 @@ Take a look at the `typescript` branch for the code in TypeScript.
 ## Usage
 HTML:
 ```html
-<script src="path/to/mahjong_tile_picker.js"></script>
-<link rel="stylesheet" type="text/css" href="path/to/mahjong_tile_picker.css">
-...
+<head>
+    <script src="path/to/mahjong_tile_picker.js"></script>
+    <link rel="stylesheet" type="text/css" href="path/to/mahjong_tile_picker.css">
+</head>
 <body>
     <div id="parentHtmlElementId"></div>
 </body>
@@ -17,8 +21,8 @@ HTML:
 
 JavaScript:
 ```javascript
-// Call this after the page has loaded
-var picker = new MahjongTilePicker("parentHtmlElementId");
+// Call this after the page has loaded. The second argument is optional.
+var picker = new MahjongTilePicker("parentHtmlElementId", "Text to put on buttons");
 
 console.log(picker.getTile()); // initially null
 
@@ -49,14 +53,17 @@ picker.pickTile(Tile.East);
 ```
 
 ## To-Do
-* Hide tiles when not choosing
-* Group tiles by suit
-* Add CSS to make it prettier
+* Position the preview and button right
 * Allow choosing dora tiles (the red ones)
 * Add a gif to the readme
-* Make a demo page oh gh-pages
-* Have the picking box div float in the middle of the page
-* Allow for multiple pickers on the same page (that share the box div)
+* Allow choosing the null tile
+* Allow choosing by clicking on the tile
+* ~~Fade in, fade out~~
+* ~~Have the lightbox disappear when you click elsewhere~~
+* ~~Have the picking box div float in the middle of the page~~
+* ~~Hide tiles when not choosing~~
+* ~~Make a demo page oh gh-pages~~
+* ~~Allow for multiple pickers on the same page (that share the box div)~~
 
 ## License
 * MIT
