@@ -47,6 +47,7 @@ class MahjongTilePicker {
     
     private initPreviewElem(): void {
         this.previewElem = document.createElement("img");
+        this.previewElem.className = "mahjong-tile-picker-preview";
         this.previewElem.setAttribute("src", MahjongTilePickerHelper.getImagePath(null));
         this.containerElem.appendChild(this.previewElem);
     }
@@ -126,6 +127,7 @@ class MahjongTilePickerLightbox {
         for (var i = Tile.East; i <= Tile.Red; i++) {
             this.initTileElem("tile-Winds", Tile[i]);
         }
+        this.initTileElem("tile-Back", "Back");
     }
     
     private initTileElem(className: string, tileName: string): void {
@@ -140,7 +142,12 @@ class MahjongTilePickerLightbox {
     private initBindings(): void {
         this.tileElems.forEach((tileElem, index, elems) => {
             tileElem.onclick = () => {
-                this.selectedPicker.pickTile(Tile[tileElem.id]);
+                if (tileElem.id == "Back") {
+                    var tile = null;
+                } else {
+                    var tile = Tile[tileElem.id];
+                }
+                this.selectedPicker.pickTile(tile);
                 this.selectedPicker = null;
                 this.hide();
             }
