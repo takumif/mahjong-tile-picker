@@ -2,7 +2,6 @@ class MahjongTilePicker {
     private tile: Tile;
     private parentElem: HTMLElement;
     private containerElem: HTMLDivElement;
-    private buttonElem: HTMLButtonElement;
     private previewElem: HTMLImageElement;
     private buttonText: string;
     private lightbox: MahjongTilePickerLightbox;
@@ -42,15 +41,8 @@ class MahjongTilePicker {
         this.containerElem.className = "mahjong-tile-picker";
         
         this.initPreviewElem();
-        this.initButtonElem();
         
         this.parentElem.appendChild(this.containerElem);
-    }
-    
-    private initButtonElem(): void {
-        this.buttonElem = document.createElement("button");
-        this.buttonElem.innerText = this.buttonText;
-        this.containerElem.appendChild(this.buttonElem);
     }
     
     private initPreviewElem(): void {
@@ -60,7 +52,7 @@ class MahjongTilePicker {
     }
     
     private initBindings(): void {
-        this.buttonElem.onclick = () => {
+        this.previewElem.onclick = () => {
             this.lightbox.showForPicker(this);
         }
     }
