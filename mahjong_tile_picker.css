@@ -1,3 +1,7 @@
+.mahjong-tile-picker {
+    cursor: pointer;
+}
+
 .mahjong-tile {
     cursor: pointer;
 }
