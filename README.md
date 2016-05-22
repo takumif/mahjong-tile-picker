@@ -2,6 +2,8 @@
 A small JavaScript library for selecting mahjong tiles on a website.
 Take a look at the `typescript` branch for the code in TypeScript.
 
+[DEMO](http://takumif.github.io/mahjong-tile-picker/)
+
 ## Usage
 HTML:
 ```html
@@ -29,7 +31,7 @@ Tile[picker.getTile()]; // 'W9'
 ```
 
 The `Tile` enum contains values `W1-W9, T1-T9, S1-S9, East, South, West, North, White, Green, Red`.
-W for wanzi, T for tongzi, and S for suozi.
+W for wanzi (characters), T for tongzi (circles), and S for suozi (bamboos).
 ```javascript
 Tile.W1 // 0
 Tile[Tile.W1] // 'W1'
