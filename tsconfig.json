@@ -1,6 +1,0 @@
-{
-    "compilerOptions": {
-        "module": "none",
-        "target": "es5"
-    }
-}
