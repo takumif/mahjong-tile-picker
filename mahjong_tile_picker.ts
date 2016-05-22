@@ -10,7 +10,6 @@ class MahjongTilePicker {
     constructor(elementId: string, buttonText="Pick a tile") {
         this.parentElem = document.getElementById(elementId);
         this.buttonText = buttonText;
-        this.lightbox = MahjongTilePickerLightbox.getInstance();
         this.init();
     }
     
@@ -33,6 +32,7 @@ class MahjongTilePicker {
     
     private init(): void {
         this.tile = null;
+        this.lightbox = MahjongTilePickerLightbox.getInstance();
         this.initDomElements();
         this.initBindings();
     }
@@ -79,6 +79,7 @@ class MahjongTilePickerLightbox {
     private static instance: MahjongTilePickerLightbox;
     private tileElems: HTMLImageElement[];
     private boxElem: HTMLDivElement;
+    private backgroundElem: HTMLDivElement;
     private selectedPicker: MahjongTilePicker;
     
     /**
@@ -93,29 +94,41 @@ class MahjongTilePickerLightbox {
     
     showForPicker(picker: MahjongTilePicker): void {
         this.selectedPicker = picker;
-        fadeIn(this.boxElem);
+        this.show();
     }
     
     /**
      * Do not call this. Use getInstance() instead.
      */
     constructor() {
+        this.initBackgroundElem();
         this.initBoxElem();
         this.initBindings();
+    }
+    
+    private initBackgroundElem(): void {
+        this.backgroundElem = document.createElement("div");
+        this.backgroundElem.className = "mahjong-tile-picker-lightbox-background";
+        this.backgroundElem.setAttribute("max-opacity", "0.7");
+        document.getElementsByTagName("body")[0].appendChild(this.backgroundElem);
     }
     
     private initBoxElem(): void {
         this.boxElem = document.createElement("div");
         this.boxElem.className = "mahjong-tile-picker-lightbox";
+        this.boxElem.setAttribute("max-opacity", "1");
         this.initTileElems();
         document.getElementsByTagName("body")[0].appendChild(this.boxElem);
     }
     
     private initTileElems(): void {
         this.tileElems = [];
-        ["W", "P", "S"].forEach((suit, index, suits) => {
+        ["W", "T", "S"].forEach((suit, index, suits) => {
             for (var i = 1; i <= 9; i++) {
                 this.initTileElem("tile-" + suit, suit + i);
+                if (i == 5) {
+                    this.initTileElem("tile-" + suit, suit + i + "_red");
+                }
             }
         });
         for (var i = Tile.East; i <= Tile.Red; i++) {
@@ -125,8 +138,8 @@ class MahjongTilePickerLightbox {
     
     private initTileElem(className: string, tileName: string): void {
         var tileElem = document.createElement("img");
-        tileElem.setAttribute("class", "mahjong-tile " + className);
-        tileElem.setAttribute("id", tileName);
+        tileElem.className = "mahjong-tile " + className;
+        tileElem.id = tileName;
         tileElem.setAttribute("src", MahjongTilePickerHelper.getImagePath(Tile[tileName]));
         this.boxElem.appendChild(tileElem);
         this.tileElems.push(tileElem);
@@ -136,9 +149,24 @@ class MahjongTilePickerLightbox {
         this.tileElems.forEach((tileElem, index, elems) => {
             tileElem.onclick = () => {
                 this.selectedPicker.pickTile(Tile[tileElem.id]);
-                fadeOut(this.boxElem);
+                this.selectedPicker = null;
+                this.hide();
             }
         });
+        this.backgroundElem.onclick = () => {
+            this.selectedPicker = null;
+            this.hide();
+        }
+    }
+    
+    private show(): void {
+        fadeIn(this.boxElem);
+        fadeIn(this.backgroundElem);
+    }
+    
+    private hide(): void {
+        fadeOut(this.boxElem);
+        fadeOut(this.backgroundElem);
     }
 }
 
@@ -157,17 +185,33 @@ class MahjongTilePickerHelper {
 }
 
 enum Tile {
-    W1, W2, W3, W4, W5, W6, W7, W8, W9,
-    T1, T2, T3, T4, T5, T6, T7, T8, T9,
-    S1, S2, S3, S4, S5, S6, S7, S8, S9,
+    W1, W2, W3, W4, W5, W5_red, W6, W7, W8, W9,
+    T1, T2, T3, T4, T5, T5_red, T6, T7, T8, T9,
+    S1, S2, S3, S4, S5, S5_red, S6, S7, S8, S9,
     East, South, West, North,
     White, Green, Red
 }
 
 function fadeOut(elem: HTMLElement): void {
-    elem.style.display = "none";
+    var opacity = Number(elem.style.opacity);
+    var timer = setInterval(function () {
+        if (opacity <= 0.1) {
+            clearInterval(timer);
+            elem.style.display = 'none';
+        }
+        elem.style.opacity = String(opacity);
+        opacity -= 0.1;
+    }, 20);
 }
 
 function fadeIn(elem: HTMLElement): void {
-    elem.style.display = "block";
+    var opacity = 0;
+    var timer = setInterval(function () {
+        if (opacity >= Number(elem.getAttribute("max-opacity"))) {
+            clearInterval(timer);
+        }
+        elem.style.opacity = String(opacity);
+        opacity += 0.1;
+    }, 20);
+    elem.style.display = 'block';
 }
