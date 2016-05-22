@@ -54,19 +54,6 @@ picker.pickTile(Tile.East);
 // log: You just picked East!
 ```
 
-## To-Do
-* Add a gif to the readme
-* Allow choosing the null tile
-* ~~Allow choosing by clicking on the tile~~
-* ~~Position the preview right~~
-* ~~Allow choosing dora tiles (the red ones)~~
-* ~~Fade in, fade out~~
-* ~~Have the lightbox disappear when you click elsewhere~~
-* ~~Have the picking box div float in the middle of the page~~
-* ~~Hide tiles when not choosing~~
-* ~~Make a demo page oh gh-pages~~
-* ~~Allow for multiple pickers on the same page (that share the box div)~~
-
 ## License
 * MIT
 * The image assets are by Aki ([source](http://sozai.7gates.net/docs/mahjong01/))
